@@ -4,7 +4,7 @@
       <div class="card">
           <div class="card-header">
               <router-link 
-                  class="btn btn-outline-info float-right"
+                  class="btn btn-info float-right"
                   to="/">View All IP
               </router-link>
           </div>
@@ -42,7 +42,7 @@
                       :disabled="isSaving"
                       type="button"
                       class="btn btn-primary mt-3">
-                      Save Project
+                      Save 
                   </button>
               </form>
           </div>
@@ -52,7 +52,7 @@
    
   <script>
   import axios from 'axios';
-  import LayoutDiv from '../LayoutDiv.vue';
+  import LayoutDiv from './LayoutDiv.vue';
   import Swal from 'sweetalert2'
    
   export default {
@@ -62,9 +62,10 @@
     },
     data() {
       return {
-        project: {
+        ip: {
           name: '',
-          description: '',
+          ip: '',
+          comment: '',
         },
         isSaving:false,
       };
