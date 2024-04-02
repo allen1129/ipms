@@ -1,0 +1,26 @@
+ipms-fe/node_modules/
+ipms-fe/node_modules/*
+
+ipms-fe/.DS_Store
+ipms-fe/node_modules
+ipms-fe/dist
+
+
+# local env files
+ipms-fe/.env.local
+ipms-fe/.env.*.local
+
+# Log files
+ipms-fe/npm-debug.log*
+ipms-fe/yarn-debug.log*
+ipms-fe/yarn-error.log*
+ipms-fe/pnpm-debug.log*
+
+# Editor directories and files
+ipms-fe/.idea
+ipms-fe/.vscode
+ipms-fe/*.suo
+ipms-fe/*.ntvs*
+ipms-fe/*.njsproj
+ipms-fe/*.sln
+ipms-fe/*.sw?
