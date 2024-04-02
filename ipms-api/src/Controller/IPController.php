@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class IPController
@@ -19,13 +19,21 @@ use Illuminate\Support\Facades\Log;
  #[Route('/api', name: 'api_')]
 class IPController extends AbstractController
 {
+
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * List all IP entities.
      * @Route('/ips', name='ip_index', methods={'GET'})
      * @param EntityManagerInterface $entityManager
      * @return JsonResponse
      */
-    #[Route('/ips', name: 'project_index', methods:['get'] )]
+    #[Route('/ips', name: 'ip_index', methods:['get'] )]
     public function index(EntityManagerInterface $entityManager): JsonResponse
     {
         $ips = $entityManager
@@ -41,7 +49,6 @@ class IPController extends AbstractController
         return $this->json($data);
     }
 
-
     /**
      * Show a single IP entity.
      * @Route('/ips/{id}', name='ip_show', methods={'GET'})
@@ -49,6 +56,7 @@ class IPController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
+    #[Route('/ips/{id}', name: 'ip_show', methods:['get'] )]
     public function show(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $ip = $entityManager->getRepository(IP::class)->find($id);
@@ -67,6 +75,7 @@ class IPController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
+    #[Route('/ips', name: 'ip_create', methods:['post'] )]
     public function create(EntityManagerInterface $entityManager, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -82,7 +91,8 @@ class IPController extends AbstractController
 
         $entityManager->persist($ip);
         $entityManager->flush();
-
+        
+        $this->logAuditTrail(array(), $ip->toArray(), 'Create IP ');
         return $this->json($ip->toArray());
     }
 
@@ -94,6 +104,7 @@ class IPController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
+    #[Route('/ips/{id}', name: 'ip_update', methods:['put'] )]
     public function update(EntityManagerInterface $entityManager, Request $request, int $id): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -123,6 +134,7 @@ class IPController extends AbstractController
         return $this->json($ip->toArray());
     }
 
+
     /**
      * Delete an existing IP entity.
      * @Route('/ips/{id}', name='ip_delete', methods={'DELETE'})
@@ -130,6 +142,7 @@ class IPController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
+    #[Route('/projects/{id}', name: 'ip_delete', methods:['delete'] )]
     public function delete(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $ip = $entityManager->getRepository(IP::class)->find($id);
@@ -158,13 +171,13 @@ class IPController extends AbstractController
      */
     private function logAuditTrail(array $oldData, array $newData, string $action): void
     {
-         // Log the audit trail
-        Log::info('Action: ' . $action);
+        // Log the audit trail
+        $this->logger->info('Action: ' . $action);
         
-        // Log old data
-        Log::info('Old Data:', $oldData);
+         // Log old data
+        $this->logger->info('Old Data: ' . json_encode($oldData));
         
         // Log new data
-        Log::info('New Data:', $newData);
+        $this->logger->info('New Data: ' . json_encode($newData));
     }
 }
