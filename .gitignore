@@ -24,3 +24,5 @@ ipms-fe/*.ntvs*
 ipms-fe/*.njsproj
 ipms-fe/*.sln
 ipms-fe/*.sw?
+ipms-apiv2
+.gitignore

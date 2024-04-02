@@ -25,7 +25,7 @@ class IPController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return JsonResponse
      */
-    #[Route('/ips', name: 'ips_index', methods:['get'] )]
+    #[Route('/ips', name: 'project_index', methods:['get'] )]
     public function index(EntityManagerInterface $entityManager): JsonResponse
     {
         $ips = $entityManager
@@ -41,6 +41,24 @@ class IPController extends AbstractController
         return $this->json($data);
     }
 
+
+    /**
+     * Show a single IP entity.
+     * @Route('/ips/{id}', name='ip_show', methods={'GET'})
+     * @param EntityManagerInterface $entityManager
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function show(EntityManagerInterface $entityManager, int $id): JsonResponse
+    {
+        $ip = $entityManager->getRepository(IP::class)->find($id);
+
+        if (!$ip) {
+            return $this->json('No IP found for id ' . $id, 404);
+        }
+
+        return $this->json($ip->toArray());
+    }
 
     /**
      * Log the audit trail.
