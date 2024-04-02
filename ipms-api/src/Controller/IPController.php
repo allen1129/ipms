@@ -87,6 +87,70 @@ class IPController extends AbstractController
     }
 
     /**
+     * Update an existing IP entity.
+     * @Route('/ips/{id}', name='ip_update', methods={'PUT', 'PATCH'})
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(EntityManagerInterface $entityManager, Request $request, int $id): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $ip = $entityManager->getRepository(IP::class)->find($id);
+
+        if (!$ip) {
+            return $this->json('No IP found for id ' . $id, 404);
+        }
+
+        // Audit Trail: Log the updated data
+        $oldData = $ip->toArray();
+
+        $ip->setIp($data['ip']);
+        $ip->setName($data['name']);
+        $ip->setComment($data['comment']);
+        $ip->setStatus($data['status']);
+        $ip->setUpdatedAt(new \DateTime());
+        $ip->setCreatedBy($data['created_by']);
+
+        $entityManager->flush();
+
+        // Audit Trail: Log the changes
+        $newData = $ip->toArray();
+        $this->logAuditTrail($oldData, $newData, 'Updated IP with id ' . $id);
+
+        return $this->json($ip->toArray());
+    }
+
+    /**
+     * Delete an existing IP entity.
+     * @Route('/ips/{id}', name='ip_delete', methods={'DELETE'})
+     * @param EntityManagerInterface $entityManager
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function delete(EntityManagerInterface $entityManager, int $id): JsonResponse
+    {
+        $ip = $entityManager->getRepository(IP::class)->find($id);
+
+        if (!$ip) {
+            return $this->json('No IP found for id ' . $id, 404);
+        }
+
+        // Audit Trail: Log the deleted data
+        $deletedData = $ip->toArray();
+
+        $entityManager->remove($ip);
+        $entityManager->flush();
+
+        // Audit Trail: Log the deletion
+        $this->logAuditTrail($deletedData, [], 'Deleted IP with id ' . $id);
+
+        return $this->json('Deleted an IP successfully with id ' . $id);
+    }
+
+    /**
      * Log the audit trail.
      * @param array $oldData
      * @param array $newData
