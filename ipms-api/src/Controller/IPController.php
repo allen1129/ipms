@@ -60,6 +60,32 @@ class IPController extends AbstractController
         return $this->json($ip->toArray());
     }
 
+     /**
+     * Create a new IP entity.
+     * @Route('/ips', name='ip_create', methods={'POST'})
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function create(EntityManagerInterface $entityManager, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $ip = new IP();
+        $ip->setIp($data['ip']);
+        $ip->setName($data['name']);
+        $ip->setComment($data['comment']);
+        $ip->setStatus($data['status']);
+        $ip->setCreatedAt(new \DateTime());
+        $ip->setUpdatedAt(new \DateTime());
+        $ip->setCreatedBy($data['created_by']);
+
+        $entityManager->persist($ip);
+        $entityManager->flush();
+
+        return $this->json($ip->toArray());
+    }
+
     /**
      * Log the audit trail.
      * @param array $oldData
