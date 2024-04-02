@@ -14,22 +14,24 @@
                       <table class="table table-bordered">
                           <thead>
                               <tr>
+                                  <th>IP</th>
                                   <th>Name</th>
-                                  <th>Description</th>
+                                  <th>Comment</th>
                                   <th width="240px">Action</th>
                               </tr>
                           </thead>
                           <tbody>
                                
                               <tr v-for="ip in ips" :key="ip.id">
+                                  <td>{{ip.ip}}</td>
                                   <td>{{ip.name}}</td>
-                                  <td>{{ip.description}}</td>
+                                  <td>{{ip.comment}}</td>
                                   <td>
-                                      <router-link :to="`/show/${ip.id}`" class="btn btn-outline-info mx-1">Show</router-link>
-                                      <router-link :to="`/edit/${ip.id}`" class="btn btn-outline-success mx-1">Edit</router-link>
+                                      <router-link :to="`/show/${ip.id}`" class="btn btn-info mx-1">Show</router-link>
+                                      <router-link :to="`/edit/${ip.id}`" class="btn btn-success mx-1">Edit</router-link>
                                       <button 
                                           @click="handleDelete(ip.id)"
-                                          className="btn btn-outline-danger mx-1">
+                                          className="btn btn-danger mx-1">
                                           Delete
                                       </button>
                                   </td>
@@ -55,7 +57,7 @@
     },
     data() {
       return {
-        IPs:[]
+        ips:[]
       };
     },
     created() {
@@ -63,15 +65,15 @@
     },
     methods: {
         fetchList() {
-        axios.get('/api/ips')
-          .then(response => {
-              this.ips = response.data;
-              return response
-          })
-          .catch(error => {
-            return error
-          });
-      },
+            axios.get('/api/ips')
+            .then(response => {
+                this.ips = response.data;
+                return response
+            })
+            .catch(error => {
+                return error
+            });
+        },
       handleDelete(id){
           Swal.fire({
               title: 'Are you sure?',

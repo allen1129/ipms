@@ -4,14 +4,11 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createRouter, createWebHistory } from 'vue-router';
 import IPList from './components/pages/IPList';
-import IPCreate from './components/pages/IPCreate';.
-import IPEdit from './components/pages/IPEdit';.
-import IPShow from './components/pages/IPShow';.
+import IPCreate from './components/pages/IPCreate';
+import IPEdit from './components/pages/IPEdit';
+import IPShow from './components/pages/IPShow';
   
-axios.defaults.baseURL = process.env.VUE_APP_API_URL
-axios.interceptors.request.use(function (config) {
-  return config;
-});
+axios.defaults.baseURL = 'http://127.0.0.1:8000';
   
 const router = createRouter({
   history: createWebHistory(),
