@@ -5,7 +5,7 @@
               <div class="card">
                   <div class="card-header">
                       <router-link to="/create"
-                          class="btn btn-outline-primary"
+                          class="btn btn-primary"
                           >Add New IP
                       </router-link>
                   </div>
