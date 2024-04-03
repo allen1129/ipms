@@ -1,49 +1,54 @@
 <template>
     <layout-div>
-         <h2 class="text-center mt-5 mb-3">Edit IP</h2>
-         <div class="card">
-             <div class="card-header">
-                 <router-link 
-                     class="btn btn-info float-right"
-                     to="/">View All IPS
-                 </router-link>
+         <div class="card" style="margin-top:20px">
+             <div class="card-header" style="text-align: center;">
+                Edit IP 
              </div>
              <div class="card-body">
                  <form>
                      <div class="form-group">
                          <label htmlFor="name">IP</label>
                          <input 
-                             v-model="ip.name"
+                             v-model="ip.ip"
                              type="text"
                              class="form-control"
-                             id="name"
-                             name="name"/>
+                             id="ip"
+                             readonly
+                             name="ip"/>
                      </div>
                      <div class="form-group">
                          <label htmlFor="description">Name</label>
                          <textarea 
-                             v-model="ip.description"
+                             v-model="ip.name"
                              class="form-control"
-                             id="description"
+                             id="name"
                              rows="3"
-                             name="description"></textarea>
+                             name="name"></textarea>
                      </div>
                      <div class="form-group">
                          <label htmlFor="description">Comment</label>
                          <textarea 
-                             v-model="ip.description"
+                             v-model="ip.comment"
                              class="form-control"
-                             id="description"
+                             id="comment"
                              rows="3"
-                             name="description"></textarea>
+                             name="comment"></textarea>
                      </div>
-                     <button 
-                         @click="handleSave()"
-                         :disabled="isSaving"
-                         type="button"
-                         class="btn btn-primary mt-3">
-                         Save
-                     </button>
+                     <div class="form-group ">
+                        <button 
+                            @click="handleSave()"
+                            :disabled="isSaving"
+                            type="button"
+                            style="margin-left: 10px; margin-top:10px"
+                            class="btn btn-primary  float-end">
+                            Save
+                        </button>
+                        <router-link 
+                            style=" margin-top:10px"
+                            class="btn btn-info float-end"
+                            to="/">View All IPS
+                        </router-link>
+                    </div>
                  </form>
              </div>
          </div>
@@ -75,8 +80,9 @@
      axios.get(`/api/ips/${id}`)
      .then(response => {
          let ipInfo = response.data
+         this.ip.ip = ipInfo.ip
          this.ip.name = ipInfo.name
-         this.ip.description = ipInfo.description
+         this.ip.comment = ipInfo.comment
          return response
      })
      .catch(error => {
