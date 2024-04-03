@@ -1,13 +1,10 @@
 <template>
     <layout-div>
-      <h2 class="text-center mt-5 mb-3">Create New IP</h2>
-      <div class="card">
-          <div class="card-header">
-              <router-link 
-                  class="btn btn-info float-right"
-                  to="/">View All IP
-              </router-link>
-          </div>
+      <div class="card" style="margin-top:20px">
+            <div class="card-header" style="text-align: center;">
+              Add IP 
+            </div>
+          
           <div class="card-body">
               <form>
                   <div class="form-group">
@@ -37,13 +34,21 @@
                           rows="3"
                           name="comment"></textarea>
                   </div>
-                  <button 
-                      @click="handleSave()"
-                      :disabled="isSaving"
-                      type="button"
-                      class="btn btn-primary mt-3">
-                      Save 
-                  </button>
+                  <div class="form-group ">
+                    <button 
+                        @click="handleSave()"
+                        :disabled="isSaving"
+                        type="button"
+                        style="margin-left: 10px; margin-top:10px"
+                        class="btn btn-primary float-end">
+                        Save 
+                    </button>
+                      <router-link 
+                      style=" margin-top:10px"
+                      class="btn btn-info float-end"
+                      to="/">View All IP
+                  </router-link>
+                </div>
               </form>
           </div>
       </div>
