@@ -5,7 +5,7 @@
              <div class="card-header">
                  <router-link 
                      class="btn btn-info float-right"
-                     to="/">View All Projects
+                     to="/">View All Ip's
                  </router-link>
              </div>
              <div class="card-body">
@@ -34,7 +34,8 @@
      return {
        ip: {
          name: '',
-         description: '',
+         comment: '',
+         ip: '',
        },
        isSaving:false,
      };
@@ -43,9 +44,10 @@
      const id = this.$route.params.id;
      axios.get(`/api/ips/${id}`)
      .then(response => {
-         let projectInfo = response.data
-         this.ip.name = projectInfo.name
-         this.ip.description = projectInfo.description
+         let ipData = response.data
+         this.ip.ip = ipData.ip
+         this.ip.name = ipData.name
+         this.ip.comment = ipData.comment
          return response
      })
      .catch(error => {
