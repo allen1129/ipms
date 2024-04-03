@@ -5,15 +5,15 @@
               <div class="card">
                   <div class="card-header">
                       <router-link to="/create"
-                          class="btn btn-primary"
+                          class="btn btn-primary float-end"
                           >Add New IP
                       </router-link>
                   </div>
                   <div class="card-body">
                
-                      <table class="table table-bordered">
+                      <table class="table table-bordered" style="text-align:center">
                           <thead>
-                              <tr>
+                              <tr >
                                   <th>IP</th>
                                   <th>Name</th>
                                   <th>Comment</th>
