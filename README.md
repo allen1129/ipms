@@ -3,7 +3,7 @@ Overview:
 The IP Management System (IPMS) is a web application designed to manage IP addresses efficiently. It provides features for listing, creating, editing, and showing IP entities, along with user authentication for secure access.
 
 Note:
-Due to difficulties in setting up PHPUNIT tests and issues with OAuth2 configuration, JWT authentication was used instead. This decision was made due to time constraints and the familiarity of using JWT authentication compared to OAuth2 in Laravel.
+Due to time limition was not able to set up up PHPUNIT tests and fix the issues with OAuth2 configuration using Syfomy, JWT authentication was used instead. This decision was made due to time constraints and the familiarity of using JWT authentication compared to OAuth and more familiar to use it in laravel, but having hard time setting it up using this framework.
 
 Commits and Codes Descriptions
 Frontend (FE)
