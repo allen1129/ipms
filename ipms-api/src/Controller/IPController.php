@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -22,10 +24,13 @@ class IPController extends AbstractController
 {
 
     private $logger;
+    private $validator;
 
-    public function __construct(LoggerInterface $logger)
+
+    public function __construct(LoggerInterface $logger, ValidatorInterface $validator)
     {
         $this->logger = $logger;
+        $this->validator = $validator;
     }
 
     /**
@@ -81,6 +86,26 @@ class IPController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        // Validate the incoming data
+        $constraints = new Assert\Collection([
+            'ip' => new Assert\NotBlank(),
+            'name' => new Assert\NotBlank(),
+            'comment' => new Assert\NotBlank(),
+            'status' => new Assert\NotBlank(),
+            'created_by' => new Assert\NotBlank(),
+        ]);
+
+        $violations = $this->validator->validate($data, $constraints);
+
+        if (count($violations) > 0) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $errors[$violation->getPropertyPath()] = $violation->getMessage();
+            }
+            return $this->json(['errors' => $errors], 400);
+        }
+
+        // If validation passes, proceed to create the IP entity
         $ip = new IP();
         $ip->setIp($data['ip']);
         $ip->setName($data['name']);
@@ -92,8 +117,9 @@ class IPController extends AbstractController
 
         $entityManager->persist($ip);
         $entityManager->flush();
-        
+
         $this->logAuditTrail(array(), $ip->toArray(), 'Create IP ');
+
         return $this->json($ip->toArray());
     }
 
