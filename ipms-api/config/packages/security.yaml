@@ -12,7 +12,7 @@ security:
         app_user_provider:
             memory:
                 users:
-                    user1: { password: '$argon2id$v=19$m=65536,t=4,p=1$Vl8yZlBWU3NsT3JvSjlQeg$Ud/pF1ZjPZpw9rG0yq/gFwlZgsZm8d5YHDgNhzIg4eI', roles: ['ROLE_USER'] }
+                    test@example.com: { password: '$2y$10$sZI624e3zOykSQm.1A8/te6gQj8pY0t23s1IL05amnQTxbMnPlyrC', roles: ['ROLE_USER'] }
                     # Add more users as needed
                     # user2: { password: ..., roles: [...] }
     
@@ -20,19 +20,13 @@ security:
     # ...
 
     firewalls:
-        login:
-            pattern: ^/api/login
-            stateless: true
-            json_login:
-                check_path: /api/login_check
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
+       
         api:
-            pattern:   ^/api
+            pattern: ^/api
             stateless: true
             jwt: ~
 
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

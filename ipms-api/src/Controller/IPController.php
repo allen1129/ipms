@@ -14,10 +14,10 @@ use Psr\Log\LoggerInterface;
 /**
  * Class IPController
  * @package App\Controller
- * @Route('/api', name='api_')
+ * @Route('/api', name='api_ips')
  */
 
- #[Route('/api', name: 'api_')]
+ #[Route('/api', name: 'api_ips')]
 class IPController extends AbstractController
 {
 
