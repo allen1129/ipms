@@ -89,10 +89,8 @@ class IPController extends AbstractController
         // Validate the incoming data
         $constraints = new Assert\Collection([
             'ip' => new Assert\NotBlank(),
-            'name' => new Assert\NotBlank(),
-            'comment' => new Assert\NotBlank(),
-            'status' => new Assert\NotBlank(),
-            'created_by' => new Assert\NotBlank(),
+            'name' => new Assert\Optional(),
+            'comment' => new Assert\Optional()
         ]);
 
         $violations = $this->validator->validate($data, $constraints);
@@ -110,10 +108,10 @@ class IPController extends AbstractController
         $ip->setIp($data['ip']);
         $ip->setName($data['name']);
         $ip->setComment($data['comment']);
-        $ip->setStatus($data['status']);
+        $ip->setStatus("A");
         $ip->setCreatedAt(new \DateTime());
         $ip->setUpdatedAt(new \DateTime());
-        $ip->setCreatedBy($data['created_by']);
+        $ip->setCreatedBy("1");
 
         $entityManager->persist($ip);
         $entityManager->flush();
